@@ -1,4 +1,4 @@
-# gulp-imagemin-changba [![Build Status](https://travis-ci.com/ChangbaFE/gulp-imagemin.svg?branch=master)](https://travis-ci.com/ChangbaFE/gulp-imagemin) [![XO code style](https://img.shields.io/badge/code_style-XO-5ed9c7.svg)](https://github.com/xojs/xo)
+# gulp-imagemin-changba [![Build Status](https://travis-ci.org/ChangbaFE/gulp-imagemin.svg?branch=master)](https://travis-ci.org/ChangbaFE/gulp-imagemin) [![XO code style](https://img.shields.io/badge/code_style-XO-5ed9c7.svg)](https://github.com/xojs/xo)
 
 > Minify PNG, JPEG, GIF and SVG images with [`imagemin`](https://github.com/imagemin/imagemin)
 
