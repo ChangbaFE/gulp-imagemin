@@ -8,117 +8,117 @@ const imagemin = require('imagemin');
 const plur = require('plur');
 
 const PLUGIN_NAME = 'gulp-imagemin';
-const defaultPlugins = ['gifsicle', 'mozjpeg', 'optipng', 'svgo'];
+const defaultPlugins = ['gifsicle-changba', 'jpegtran-changba', 'mozjpeg', 'optipng-changba', 'svgo'];
 
 const loadPlugin = (plugin, ...args) => {
-	try {
-		return require(`imagemin-${plugin}`)(...args);
-	} catch (_) {
-		log(`${PLUGIN_NAME}: Couldn't load default plugin "${plugin}"`);
-	}
+  try {
+    return require(`imagemin-${plugin}`)(...args);
+  } catch (_) {
+    log(`${PLUGIN_NAME}: Couldn't load default plugin "${plugin}"`);
+  }
 };
 
 const exposePlugin = plugin => (...args) => loadPlugin(plugin, ...args);
 
 const getDefaultPlugins = () =>
-	defaultPlugins.reduce((plugins, plugin) => {
-		const instance = loadPlugin(plugin);
+  defaultPlugins.reduce((plugins, plugin) => {
+    const instance = loadPlugin(plugin);
 
-		if (!instance) {
-			return plugins;
-		}
+    if (!instance) {
+      return plugins;
+    }
 
-		return plugins.concat(instance);
-	}, []);
+    return plugins.concat(instance);
+  }, []);
 
 module.exports = (plugins, options) => {
-	if (typeof plugins === 'object' && !Array.isArray(plugins)) {
-		options = plugins;
-		plugins = undefined;
-	}
+  if (typeof plugins === 'object' && !Array.isArray(plugins)) {
+    options = plugins;
+    plugins = undefined;
+  }
 
-	options = {
-		// TODO: Remove this when Gulp gets a real logger with levels
-		silent: process.argv.includes('--silent'),
-		verbose: process.argv.includes('--verbose'),
-		...options
-	};
+  options = {
+    silent: process.argv.includes('--silent'),
+    verbose: process.argv.includes('--verbose'),
+    ...options
+  };
 
-	const validExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.svg'];
+  const validExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.svg'];
 
-	let totalBytes = 0;
-	let totalSavedBytes = 0;
-	let totalFiles = 0;
+  let totalBytes = 0;
+  let totalSavedBytes = 0;
+  let totalFiles = 0;
 
-	return through.obj({
-		maxConcurrency: 8
-	}, (file, encoding, callback) => {
-		if (file.isNull()) {
-			callback(null, file);
-			return;
-		}
+  return through.obj({
+    maxConcurrency: 8
+  }, (file, encoding, callback) => {
+    if (file.isNull()) {
+      callback(null, file);
+      return;
+    }
 
-		if (file.isStream()) {
-			callback(new PluginError(PLUGIN_NAME, 'Streaming not supported'));
-			return;
-		}
+    if (file.isStream()) {
+      callback(new PluginError(PLUGIN_NAME, 'Streaming not supported'));
+      return;
+    }
 
-		if (!validExtensions.includes(path.extname(file.path).toLowerCase())) {
-			if (options.verbose) {
-				log(`${PLUGIN_NAME}: Skipping unsupported image ${chalk.blue(file.relative)}`);
-			}
+    if (!validExtensions.includes(path.extname(file.path).toLowerCase())) {
+      if (options.verbose) {
+        log(`${PLUGIN_NAME}: Skipping unsupported image ${chalk.blue(file.relative)}`);
+      }
 
-			callback(null, file);
-			return;
-		}
+      callback(null, file);
+      return;
+    }
 
-		const localPlugins = plugins || getDefaultPlugins();
+    const localPlugins = plugins || getDefaultPlugins();
 
-		(async () => {
-			try {
-				const data = await imagemin.buffer(file.contents, {
-					plugins: localPlugins
-				});
-				const originalSize = file.contents.length;
-				const optimizedSize = data.length;
-				const saved = originalSize - optimizedSize;
-				const percent = originalSize > 0 ? (saved / originalSize) * 100 : 0;
-				const savedMsg = `saved ${prettyBytes(saved)} - ${percent.toFixed(1).replace(/\.0$/, '')}%`;
-				const msg = saved > 0 ? savedMsg : 'already optimized';
+    (async () => {
+      try {
+        const data = await imagemin.buffer(file.contents, {
+          plugins: localPlugins
+        });
+        const originalSize = file.contents.length;
+        const optimizedSize = data.length;
+        const saved = originalSize - optimizedSize;
+        const percent = originalSize > 0 ? (saved / originalSize) * 100 : 0;
+        const savedMsg = `saved ${prettyBytes(saved)} - ${percent.toFixed(1).replace(/\.0$/, '')}%`;
+        const msg = saved > 0 ? savedMsg : 'already optimized';
 
-				if (saved > 0) {
-					totalBytes += originalSize;
-					totalSavedBytes += saved;
-					totalFiles++;
-				}
+        if (saved > 0) {
+          totalBytes += originalSize;
+          totalSavedBytes += saved;
+          totalFiles++;
+        }
 
-				if (options.verbose) {
-					log(`${PLUGIN_NAME}:`, chalk.green('✔ ') + file.relative + chalk.gray(` (${msg})`));
-				}
+        if (options.verbose) {
+          log(`${PLUGIN_NAME}:`, chalk.green('✔ ') + file.relative + chalk.gray(` (${msg})`));
+        }
 
-				file.contents = data;
-				callback(null, file);
-			} catch (error) {
-				callback(new PluginError(PLUGIN_NAME, error, {fileName: file.path}));
-			}
-		})();
-	}, callback => {
-		if (!options.silent) {
-			const percent = totalBytes > 0 ? (totalSavedBytes / totalBytes) * 100 : 0;
-			let msg = `Minified ${totalFiles} ${plur('image', totalFiles)}`;
+        file.contents = data;
+        callback(null, file);
+      } catch (error) {
+        callback(new PluginError(PLUGIN_NAME, error, {fileName: file.path}));
+      }
+    })();
+  }, callback => {
+    if (!options.silent) {
+      const percent = totalBytes > 0 ? (totalSavedBytes / totalBytes) * 100 : 0;
+      let msg = `Minified ${totalFiles} ${plur('image', totalFiles)}`;
 
-			if (totalFiles > 0) {
-				msg += chalk.gray(` (saved ${prettyBytes(totalSavedBytes)} - ${percent.toFixed(1).replace(/\.0$/, '')}%)`);
-			}
+      if (totalFiles > 0) {
+        msg += chalk.gray(` (saved ${prettyBytes(totalSavedBytes)} - ${percent.toFixed(1).replace(/\.0$/, '')}%)`);
+      }
 
-			log(`${PLUGIN_NAME}:`, msg);
-		}
+      log(`${PLUGIN_NAME}:`, msg);
+    }
 
-		callback();
-	});
+    callback();
+  });
 };
 
-module.exports.gifsicle = exposePlugin('gifsicle');
+module.exports.gifsicle = exposePlugin('gifsicle-changba');
+module.exports.jpegtran = exposePlugin('jpegtran-changba');
 module.exports.mozjpeg = exposePlugin('mozjpeg');
-module.exports.optipng = exposePlugin('optipng');
+module.exports.optipng = exposePlugin('optipng-changba');
 module.exports.svgo = exposePlugin('svgo');

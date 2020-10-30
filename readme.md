@@ -1,4 +1,4 @@
-# gulp-imagemin [![Build Status](https://travis-ci.com/sindresorhus/gulp-imagemin.svg?branch=master)](https://travis-ci.com/sindresorhus/gulp-imagemin) [![XO code style](https://img.shields.io/badge/code_style-XO-5ed9c7.svg)](https://github.com/xojs/xo)
+# gulp-imagemin-changba [![Build Status](https://travis-ci.com/ChangbaFE/gulp-imagemin.svg?branch=master)](https://travis-ci.com/ChangbaFE/gulp-imagemin) [![XO code style](https://img.shields.io/badge/code_style-XO-5ed9c7.svg)](https://github.com/xojs/xo)
 
 > Minify PNG, JPEG, GIF and SVG images with [`imagemin`](https://github.com/imagemin/imagemin)
 
@@ -7,7 +7,7 @@
 ## Install
 
 ```
-$ npm install --save-dev gulp-imagemin
+$ npm install --save-dev gulp-imagemin-changba
 ```
 
 ## Usage
@@ -16,12 +16,12 @@ $ npm install --save-dev gulp-imagemin
 
 ```js
 const gulp = require('gulp');
-const imagemin = require('gulp-imagemin');
+const imagemin = require('gulp-imagemin-changba');
 
 exports.default = () => (
-	gulp.src('src/images/*')
-		.pipe(imagemin())
-		.pipe(gulp.dest('dist/images'))
+  gulp.src('src/images/*')
+    .pipe(imagemin())
+    .pipe(gulp.dest('dist/images'))
 );
 ```
 
@@ -30,15 +30,15 @@ exports.default = () => (
 ```js
 // …
 .pipe(imagemin([
-	imagemin.gifsicle({interlaced: true}),
-	imagemin.mozjpeg({quality: 75, progressive: true}),
-	imagemin.optipng({optimizationLevel: 5}),
-	imagemin.svgo({
-		plugins: [
-			{removeViewBox: true},
-			{cleanupIDs: false}
-		]
-	})
+  imagemin.gifsicle({interlaced: true}),
+  imagemin.mozjpeg({quality: 75, progressive: true}),
+  imagemin.optipng({optimizationLevel: 5}),
+  imagemin.svgo({
+    plugins: [
+      {removeViewBox: true},
+      {cleanupIDs: false}
+    ]
+  })
 ]))
 // …
 ```
@@ -48,14 +48,14 @@ Note that you may come across an older, implicit syntax. In versions < 3, the sa
 ```js
 // …
 .pipe(imagemin({
-	interlaced: true,
-	progressive: true,
-	optimizationLevel: 5,
-	svgoPlugins: [
-		{
-			removeViewBox: true
-		}
-	]
+  interlaced: true,
+  progressive: true,
+  optimizationLevel: 5,
+  svgoPlugins: [
+    {
+      removeViewBox: true
+    }
+  ]
 }))
 // …
 ```
@@ -65,15 +65,15 @@ Note that you may come across an older, implicit syntax. In versions < 3, the sa
 ```js
 // …
 .pipe(imagemin([
-	imagemin.svgo({
-		plugins: [
-			{
-				removeViewBox: true
-			}
-		]
-	})
+  imagemin.svgo({
+    plugins: [
+      {
+        removeViewBox: true
+      }
+    ]
+  })
 ], {
-	verbose: true
+  verbose: true
 }))
 // …
 ```

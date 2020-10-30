@@ -1,20 +1,20 @@
 {
-	"name": "gulp-imagemin",
+	"name": "gulp-imagemin-changba",
 	"version": "7.1.0",
 	"description": "Minify PNG, JPEG, GIF and SVG images",
 	"license": "MIT",
-	"repository": "sindresorhus/gulp-imagemin",
+	"repository": "ChangbaFE/gulp-imagemin",
 	"funding": "https://github.com/sponsors/sindresorhus",
 	"author": {
 		"name": "Sindre Sorhus",
 		"email": "sindresorhus@gmail.com",
-		"url": "sindresorhus.com"
+		"url": "https://sindresorhus.com"
 	},
 	"engines": {
 		"node": ">=10"
 	},
 	"scripts": {
-		"test": "xo && ava"
+		"test": "xo --space && ava"
 	},
 	"files": [
 		"index.js"
@@ -52,10 +52,11 @@
 		"xo": "^0.25.3"
 	},
 	"optionalDependencies": {
-		"imagemin-gifsicle": "^7.0.0",
-		"imagemin-mozjpeg": "^8.0.0",
-		"imagemin-optipng": "^7.0.0",
-		"imagemin-svgo": "^7.0.0"
+		"imagemin-gifsicle-changba": "^7.0.0",
+		"imagemin-jpegtran-changba": "^7.0.0",
+		"imagemin-mozjpeg": "^9.0.0",
+		"imagemin-optipng-changba": "^8.0.0",
+		"imagemin-svgo": "^8.0.0"
 	},
 	"peerDependencies": {
 		"gulp": ">=4"
