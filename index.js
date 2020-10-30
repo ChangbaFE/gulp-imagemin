@@ -8,7 +8,7 @@ const imagemin = require('imagemin');
 const plur = require('plur');
 
 const PLUGIN_NAME = 'gulp-imagemin';
-const defaultPlugins = ['gifsicle-changba', 'jpegtran-changba', 'mozjpeg', 'optipng-changba', 'svgo'];
+const defaultPlugins = ['gifsicle-changba', 'jpegtran-changba', 'mozjpeg-changba', 'optipng-changba', 'svgo'];
 
 const loadPlugin = (plugin, ...args) => {
   try {
@@ -119,6 +119,6 @@ module.exports = (plugins, options) => {
 
 module.exports.gifsicle = exposePlugin('gifsicle-changba');
 module.exports.jpegtran = exposePlugin('jpegtran-changba');
-module.exports.mozjpeg = exposePlugin('mozjpeg');
+module.exports.mozjpeg = exposePlugin('mozjpeg-changba');
 module.exports.optipng = exposePlugin('optipng-changba');
 module.exports.svgo = exposePlugin('svgo');
